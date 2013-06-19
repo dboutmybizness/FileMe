@@ -1,0 +1,59 @@
+# decide arguments based on needs
+
+# NEEDS
+# store file names in tagged manner for later use
+# interact with engine to update filenames db
+# log info on cluster/ individual files
+#
+# return error message if no project in session
+
+# Functionality
+# auto generate project name / update project name
+# save project session for use in shell to add, remove, etc
+# storage hasn't been decided, either db or text files
+
+# Features
+# create / remove projects
+# add / remove files from projects
+# open project filelist with vim
+# list project / projects
+# change project session
+
+# user work flow
+# 1 - create a project
+    ## if it's the first project then project automatically added to session
+
+# Structure
+# Meta - page to hold session and other key value stuff for app
+# projects - text file to hold project names / files  and possible project meta
+
+# Option/Var ideas
+# l/ls -        list 'projects' || 'project_files' (when passing name of project)
+# i/init -      initialize 'project' (creates session for actions to follow --adding --removing)
+# w/which -     check which project is active
+# st/status -   show status of application showing meta data about usage
+# rm/remove -   remove a filename from initialized project
+# a/add -       add a filename to init project
+# c/create -    create an empty project
+# clone -       clone a project
+# clean -       delete all from a project including file names
+# o/open -      open project in vim (hopefully default text editor)
+# i/info -      project meta info
+# h/help -      command list/definitions
+
+import sys
+import os, os.path
+
+cwd = os.getcwd()
+
+program_dir = sys.argv[0]
+
+#total = len(sys.argv)
+#cmdargs = str(sys.argv)
+#print ("The total numbers of args passed to the script: %d " % total)
+#print ("Args list: %s " % cmdargs)
+#print ("Script name: %s" % str(sys.argv[0]))
+#for i in xrange(total):
+#     print ("Argument # %d : %s" % (i, str(sys.argv[i])))
+#print len([name for name in os.listdir('projects/')])
+
