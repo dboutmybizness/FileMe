@@ -1,6 +1,9 @@
 import sys
 import os
 
+program_dir = os.path.dirname(os.path.realpath(__file__))
+cwd = os.getcwd()
+
 def file_reader(filename, mode='r'):
     content = ''
     fopen = open(filename, mode)
@@ -10,13 +13,12 @@ def file_reader(filename, mode='r'):
         fopen.close()
     return content
 
-def parse_meta():
-    return parse_data_block('meta.txt', 'META')
-
 
 def parse_data_block(filename, block_name):
     if not filename or not block_name:
         return 'missing_values'
+    
+    filename = program_dir +'/'+ filename
     gfile = file_reader(filename)
     if len(gfile) < 0:
         return 'no_file'
@@ -53,15 +55,42 @@ def text_spitter(key):
               '''
     return val
 
+def req_return_meta():
+    meta = parse_data_block('meta.txt', 'META')
+    print meta['PROGRAM_NAME'] + '-' +meta['VERSION'] + ' **** Author: ' + meta['AUTHOR'] 
+    print ''
+    print '-->Projects: '+ meta['PROJECT_COUNT']
+
+def legal_switches(switches):
+    legals = parse_data_block('meta.txt', 'SWITCHES')
+    for i in range(len(switches)):
+        if switches[i][1:] not in legals:
+            return False
+    return True
+
 def get_options():
     dic = {}
-    dic['cwd'] = os.getcwd()
-    dic['pwd'] = sys.argv[0]
+    dic['option_count'] = len(sys.argv) - 1  #first opt is cwd
+    if dic['option_count']:
+        args = sys.argv[1:]
+        passed_switches = {}
 
-    args = sys.argv[1:]
-    
-    
+        for i in range(len(args)):
+            if args[i].startswith('-'):
+                passed_switches[i] = args[i]
+
+        # check which switches I have
+        if passed_switches:
+            if not legal_switches(passed_switches):
+                return 'bad_switches'
+            else:
+                print 'im right here' 
+        else:
+            pass
+    else:
+        req_return_meta()
     return dic
 
 options = get_options()
 print options
+

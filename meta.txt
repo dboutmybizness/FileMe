@@ -2,8 +2,15 @@ $$FILE:master_meta
 
 
 ##META##
-project_count:0
-more_jargon:test
+PROGRAM_NAME:FileMe
+VERSION:1.0beta
+AUTHOR:Darnell Lynch
+PROJECT_COUNT:0
+LAST_COMMAND_RUN:0
 ##META##
 
-
+##SWITCHES##
+i:get info
+info:ffs
+init:fsdfds
+##SWITCHES##

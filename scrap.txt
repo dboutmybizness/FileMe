@@ -29,7 +29,7 @@
 
 # Option/Var ideas
 # l/ls -        list 'projects' || 'project_files' (when passing name of project)
-# i/init -      initialize 'project' (creates session for actions to follow --adding --removing)
+# init -      initialize 'project' (creates session for actions to follow --adding --removing)
 # w/which -     check which project is active
 # st/status -   show status of application showing meta data about usage
 # rm/remove -   remove a filename from initialized project
@@ -57,3 +57,8 @@ program_dir = sys.argv[0]
 #     print ("Argument # %d : %s" % (i, str(sys.argv[i])))
 #print len([name for name in os.listdir('projects/')])
 
+- different tiers for commands
+- commands like -i can only be used alone
+
+- one tier
+	-i
