@@ -84,7 +84,7 @@ def get_options():
             if not legal_switches(passed_switches):
                 return 'bad_switches'
             else:
-                print 'im right here' 
+                print 'im right here arent i'
         else:
             pass
     else:
