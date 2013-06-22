@@ -1,0 +1,5 @@
+$$FILE:project.txt
+
+##pj##
+name:pj1
+####
