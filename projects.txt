@@ -1,5 +1,8 @@
 $$FILE:project.txt
 
-##pj##
-name:pj1
+##pj1##
+NAME:pj1
+CREATETIME:
+LAST_INIT:
+FILE_COUNT:
 ####

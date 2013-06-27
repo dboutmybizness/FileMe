@@ -1,6 +1,6 @@
 import sys
 import os
-
+import re
 from static_funcs import *
 
 
@@ -11,11 +11,21 @@ gstart, gthres = (0,0)
 gmeta = {}
 
 
+def count_projects():
+    data = file_reader('projects.txt')
+    c = 0
+    if data:
+        for i in range(len(data)):
+            if re.search('##\w+##', data[i]):
+                c += 1
+    return str(c)
+
 def init_meta():
     global gmeta
     #update things in meta
     meta = parse_block_return(parse_data_block('meta.txt', 'META'))
     meta['LAST_COMMAND_RUNTIME'] = right_now
+    meta['PROJECT_COUNT'] = count_projects()
     lines = dic_to_lines(meta)
     ck_ok = rewrite_file('meta.txt', lines, (gstart, gthres))
     gmeta = meta
@@ -89,7 +99,7 @@ def process_args(args):
         b = args[1]
         creator = ['init']
         if a in creator:
-            print b
+            print 'here'
     return (success,data)
 
 def get_options():
