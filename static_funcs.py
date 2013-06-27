@@ -1,9 +1,16 @@
 import time
+import os
+
+program_dir = os.path.dirname(os.path.realpath(__file__))
+
+def pdir(filename):
+    return program_dir + '/' + filename
 
 def get_time():
     return str(time.time())
 
 def file_reader(filename, mode='r'):
+    filename = pdir(filename)
     content = ''
     fopen = open(filename, mode)
     try:
@@ -13,11 +20,12 @@ def file_reader(filename, mode='r'):
     return content
 
 def file_write(filename, new_content):
-	fopen = open(filename, 'w')
-	try:
-		fopen.write(new_content)
-	finally:
-		fopen.close()
+    filename = pdir(filename)
+    fopen = open(filename, 'w')
+    try:
+        fopen.write(new_content)
+    finally:
+        fopen.close()
 
 def text_spitter(key):
     val = ''

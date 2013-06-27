@@ -22,7 +22,6 @@ def parse_data_block(filename, block_name):
     if not filename or not block_name:
         return 'missing_values'
     
-    filename = program_dir +'/'+ filename
     gfile = file_reader(filename)
     if len(gfile) < 0:
         return 'no_file'
@@ -67,7 +66,7 @@ def req_return_meta():
     meta = parse_block_return(parse_data_block('meta.txt', 'META'))
     #print meta['PROGRAM_NAME'] + '-' +meta['VERSION'] + ' **** Author: ' + meta['AUTHOR'] 
     #print ''
-    print '-->Projects: '+ meta['PROJECT_COUNT']
+    print '> Projects: '+ meta['PROJECT_COUNT']
 
 def legal_switches(switches):
     legals = parse_block_return(parse_data_block('meta.txt', 'SWITCHES'))
@@ -104,6 +103,5 @@ def get_options():
         req_return_meta()
     return dic
 
-options = get_options()
-
-
+if __name__ == '__main__':
+    print 'blue skys'
