@@ -8,15 +8,17 @@ right_now = get_time()
 program_dir = os.path.dirname(os.path.realpath(__file__))
 cwd = os.getcwd()
 gstart, gthres = (0,0)
+gmeta = {}
+
 
 def init_meta():
+    global gmeta
     #update things in meta
-
     meta = parse_block_return(parse_data_block('meta.txt', 'META'))
     meta['LAST_COMMAND_RUNTIME'] = right_now
     lines = dic_to_lines(meta)
     ck_ok = rewrite_file('meta.txt', lines, (gstart, gthres))
-    
+    gmeta = meta
 
 def parse_data_block(filename, block_name):
     if not filename or not block_name:
@@ -62,46 +64,81 @@ def parse_block_return(dic):
 
 
 def req_return_meta():
-    init_meta()
-    meta = parse_block_return(parse_data_block('meta.txt', 'META'))
-    #print meta['PROGRAM_NAME'] + '-' +meta['VERSION'] + ' **** Author: ' + meta['AUTHOR'] 
-    #print ''
-    print '> Projects: '+ meta['PROJECT_COUNT']
+    return 'Projects: '+ gmeta['PROJECT_COUNT']
 
-def legal_switches(switches):
-    legals = parse_block_return(parse_data_block('meta.txt', 'SWITCHES'))
-    for i in range(len(switches)):
-        if switches[i][1:] not in legals:
-            return False
-    return True
+def process_args(args):
+    for i in range(len(args)):
+        if args[i].startswith('-'):
+            args[i] = args[i][1:]
+
+    success = 0
+    data = 'BAD_ARGS'
+    a = args[0]
+    if len(args) == 1:
+        info = ['i','info']
+        active = ['a','active']
+
+        if a in info:
+            data = 'NO_ARGS'
+        elif a in active:
+            success = 1
+            data = 'SHOW_ACTIVE'
+        else:
+            pass
+    elif len(args) == 2:
+        b = args[1]
+        creator = ['init']
+        if a in creator:
+            print b
+    return (success,data)
 
 def get_options():
     dic = {}
     args = sys.argv[1:]
     len_args = len(args)
-    dic['option_count'] = len_args  #first opt is cwd
-    if dic['option_count']:
-        
-        passed_switches = {}
 
-        for i in range(len_args):
-            if args[i].startswith('-'):
-                passed_switches[i] = args[i]
+    #if no options print info screen
+    if not len_args:
+        return (0,'NO_ARGS')
+    
+    if len_args >=  1:
+        if args[0].startswith('-'):
+            return process_args(args)
+    return (0,'BAD_ARGS')
 
-        # check which switches I have
-        if passed_switches:
-            if not legal_switches(passed_switches):
-                return 'bad_switches'
-            else:
-                if process_switches():
-                    print 'here'
-                else:
-                    pass
-        else:
-            pass
+
+def do_print(data):
+    if data == 'NO_ARGS':
+        mess = req_return_meta()
+    elif data == 'BAD_ARGS':
+        mess = ['FileMe ERRor: invalid arguments','try -h for help']
+    return mess 
+
+def line_printer(l):
+    lines = []
+    if isinstance(l, str):
+        print '> %s' % (l)
+    elif isinstance(l, (list)):
+        for s in l:
+            print '> %s' % (s)
+    
+
+def _generate(data):
+    if data == 'SHOW_ACTIVE':
+        if not gmeta['ACTIVE_PROJECT']:
+            return 'no active projects, get to work'
+        return gmeta['ACTIVE_PROJECT']
+
+def main():
+    init_meta()
+    success,data = get_options()
+    if not success:
+        for_screen =  do_print(data)
     else:
-        req_return_meta()
-    return dic
+        for_screen = _generate(data)
+    return line_printer(for_screen)
 
 if __name__ == '__main__':
-    print 'blue skys'
+    main()
+else:
+    print 'ERroR'
