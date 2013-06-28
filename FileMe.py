@@ -16,7 +16,7 @@ def count_projects():
     c = 0
     if data:
         for i in range(len(data)):
-            if re.search('##\w+##', data[i]):
+            if re.search('##[\w0-9]+##', data[i]):
                 c += 1
     return str(c)
 
@@ -99,8 +99,27 @@ def process_args(args):
         b = args[1]
         creator = ['init']
         if a in creator:
-            print 'here'
+            if is_project(b):
+                start_pj_session(b)
+            else:
+                data = 'NOT_PROJECT'
     return (success,data)
+
+def start_pj_session(s):
+    global gmeta
+    gmeta['ACTIVE_PROJECT'] = s
+    print 'here'
+
+def is_project(pj):
+    f = file_reader('projects.txt')
+    names = []
+    for i in range(len(f)):
+        if re.search('##[\w0-9]+##', f[i]):
+            chopleft = f[i][2:]
+            names.append(chopleft[:-2])
+    if pj in names:
+        return True
+    return False
 
 def get_options():
     dic = {}
@@ -121,16 +140,22 @@ def do_print(data):
     if data == 'NO_ARGS':
         mess = req_return_meta()
     elif data == 'BAD_ARGS':
-        mess = ['FileMe ERRor: invalid arguments','try -h for help']
+        mess = ['ERRor: invalid arguments','  try -h for help']
+    elif data == 'NOT_PROJECT':
+        return ['ERRor: this is not a project.'
+                ,'  -plist for list of projects'
+                ,'  -new \'project name\' to create project'
+        ]
+
     return mess 
 
 def line_printer(l):
     lines = []
     if isinstance(l, str):
-        print '> %s' % (l)
+        print '%s' % (l)
     elif isinstance(l, (list)):
         for s in l:
-            print '> %s' % (s)
+            print '%s' % (s)
     
 
 def _generate(data):
